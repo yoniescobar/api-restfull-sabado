@@ -17,10 +17,10 @@ public interface ILibroService {
 
     //actualizar un libro
 
-   // public ResponseEntity<LibroResponseRest> actualizar(Libro libro, Long id);
+    public ResponseEntity<LibroResponseRest> actualizar(Libro libro, Long id);
 
     //eliminar un libro
-   // public ResponseEntity<LibroResponseRest> eliminar(Long id);
+    public ResponseEntity<LibroResponseRest> eliminar(Long id);
 
 
 }
