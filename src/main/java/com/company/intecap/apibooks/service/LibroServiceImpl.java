@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service //anotacion para indicar que es un servicio
@@ -40,6 +42,40 @@ public class LibroServiceImpl implements ILibroService {
 
         }
         return new ResponseEntity<LibroResponseRest>(response, HttpStatus.OK); //se retorna un objeto de tipo ResponseEntity con el objeto de tipo LibroResponseRest y el codigo de estado 200
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ResponseEntity<LibroResponseRest> buscarLibroPorId(Long id) {
+        log.info("inicio metodo buscarLibroPorId");
+
+        LibroResponseRest response = new LibroResponseRest(); //creacion de un objeto de tipo LibroResponseRest
+        List<Libro> list = new ArrayList<>();
+
+        try{
+            Optional<Libro> libro = libroDao.findById(id); //se busca un libro por su id
+            if(libro.isPresent()){
+                list.add(libro.get()); //se agrega el libro a la lista
+                response.getLibroResponse().setLibros(list); //se asigna la lista de libros al objeto de tipo LibroResponseRest
+                response.setMetadata("Respuesta exitosa", "200", "Libro encontrado"); //se asigna el mensaje de respuesta al objeto de tipo LibroResponseRest
+            }else{
+                log.severe("No se encontro el libro con el Id: " + id); //se muestra un mensaje de error en caso de que no se encuentre el libro
+                response.setMetadata("Respuesta no exitosa", "404", "No se encontro el libro con el Id: " + id); //se asigna el mensaje de respuesta al objeto de tipo LibroResponseRest
+                return new ResponseEntity<LibroResponseRest>(response, HttpStatus.NOT_FOUND); //se retorna un objeto de tipo ResponseEntity con el objeto de tipo LibroResponseRest y el codigo de estado 404
+            }
+        }catch (Exception e){
+            log.severe("Errror al buscar el libro : "+e.getMessage());
+            e.getStackTrace();
+            response.setMetadata("Error al buscar el libro", "500", "Error al consultar el libro"); //se asigna el mensaje de respuesta al objeto de tipo LibroResponseRest
+            return new ResponseEntity<LibroResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR); //se retorna un objeto de tipo ResponseEntity con el objeto de tipo LibroResponseRest y el codigo de estado 500
+        }
+
+        return new ResponseEntity<LibroResponseRest>(response, HttpStatus.OK); //se retorna un objeto de tipo ResponseEntity con el objeto de tipo LibroResponseRest y el codigo de estado 200
+    }
+
+    @Override
+    public ResponseEntity<LibroResponseRest> crear(Libro libro) {
+        return null;
     }
 
 }
