@@ -27,7 +27,7 @@ public class Categoria implements Serializable{
     @JsonIgnore
     @OneToMany(
                 cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY,
+                fetch = FetchType.EAGER,
                 orphanRemoval = true,
                 mappedBy = "categoria"
     )
