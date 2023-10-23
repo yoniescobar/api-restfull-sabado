@@ -14,7 +14,7 @@ public class LibroRestController {
     @Autowired // @Autowired: inyecta el servicio de libros para poder utilizarlo en este controlador REST
     private ILibroService libroService; // ILibroService: interface que contiene los metodos para acceder a los datos de la tabla libro de la base de datos (CRUD)
 
-    @GetMapping("/libros")
+    @GetMapping("/libros") // localhost:8083/api/v1/libros
     // @GetMapping: indica que este metodo se encarga de recibir las peticiones GET a la ruta /v1/libros
     public ResponseEntity<LibroResponseRest> buscarLibros() { //http://localhost:8083/api/v1/libros
         return libroService.buscarLibros(); // Retornamos la respuesta al cliente

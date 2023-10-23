@@ -74,17 +74,101 @@ public class CategoriaServiceImpl implements ICategoriaService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<CategoriaResponseRest> crear(Categoria categoria) {
-        return null;
+        log.info("Inicio metodo crear()");
+
+        CategoriaResponseRest response = new CategoriaResponseRest();
+        List<Categoria> listaCategorias = new ArrayList<>();
+
+        try {
+            Categoria categoriaGuardada = categoriaDao.save(categoria);
+            if (categoriaGuardada != null) {
+                listaCategorias.add(categoriaGuardada);
+                response.getCategoriaResponse().setCategorias(listaCategorias);
+                response.setMetadata("Respuesta ok", "200", "Respuesta exitosa");
+            } else {
+                log.info("Error al guardar categoria");
+                response.setMetadata("Respuesta no ok", "404", "Categoria no encontrada");
+                return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.NOT_FOUND); //Retorna un error 404
+            }
+        } catch (Exception e) {
+            log.severe("Error al guardar categoria: " + e.getMessage());
+            e.getStackTrace();
+            response.setMetadata("Respuesta no ok", "500", "Error al guardar categoria");
+            return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR); //Retorna un error 500
+
+        }
+        return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK); //Retorna un error 200
     }
 
     @Override
-    public ResponseEntity<CategoriaResponseRest> actualizar(Long id, Categoria categoria) {
-        return null;
+    @Transactional
+    public ResponseEntity<CategoriaResponseRest> actualizar(Categoria categoria,Long id) {
+        log.info("Inicio metodo actualizar()");
+
+        CategoriaResponseRest response = new CategoriaResponseRest();
+        List<Categoria> listaCategorias = new ArrayList<>();
+
+        try {
+            Optional<Categoria> categoriaBuscada = categoriaDao.findById(id);
+
+            if (categoriaBuscada.isPresent()) {
+                categoriaBuscada.get().setNombre(categoria.getNombre());
+                categoriaBuscada.get().setDescripcion(categoria.getDescripcion());
+                Categoria categoriaActualizada = categoriaDao.save(categoriaBuscada.get());
+
+                if (categoriaActualizada != null) { //Si la categoria se actualiza correctamente
+                    listaCategorias.add(categoriaActualizada);
+                    response.getCategoriaResponse().setCategorias(listaCategorias);
+                    response.setMetadata("Respuesta ok", "200", "Respuesta exitosa");
+                } else {
+                    log.info("Error al actualizar categoria");
+                    response.setMetadata("Respuesta no ok", "404", "Categoria no encontrada");
+                    return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.NOT_FOUND); //Retorna un error 404
+                }
+            } else {
+                log.info("Error al actualizar categoria");
+                response.setMetadata("Respuesta no ok", "404", "Categoria no encontrada");
+                return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.NOT_FOUND); //Retorna un error 404
+            }
+
+        } catch (Exception e) {
+            log.severe("Error al actualizar categoria: " + e.getMessage());
+            e.getStackTrace();
+            response.setMetadata("Respuesta no ok", "500", "Error al actualizar categoria");
+            return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR); //Retorna un error 50
+        }
+
+        return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK); //Retorna un error 200
     }
 
     @Override
+    @Transactional
     public ResponseEntity<CategoriaResponseRest> eliminar(Long id) {
-        return null;
+        log.info("Inicio metodo eliminar()");
+
+        CategoriaResponseRest response = new CategoriaResponseRest();
+
+        try {
+            Optional<Categoria> categoriaBuscada = categoriaDao.findById(id);
+
+            if (categoriaBuscada.isPresent()) {
+                categoriaDao.deleteById(id);
+                response.setMetadata("Respuesta ok", "200", "Respuesta exitosa");
+            } else {
+                log.info("Error al eliminar categoria " + id);
+                response.setMetadata("Respuesta no ok", "404", "Categoria no encontrada " + id);
+                return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.NOT_FOUND); //Retorna un error 404
+            }
+
+        } catch (Exception e) {
+            log.severe("Error al eliminar categoria: " + e.getMessage());
+            e.getStackTrace();
+            response.setMetadata("Respuesta no ok", "500", "Error al eliminar categoria");
+            return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR); //Retorna un error 500
+
+        }
+        return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK); //Retorna un error 200
     }
 }

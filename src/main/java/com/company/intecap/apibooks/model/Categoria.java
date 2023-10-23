@@ -1,43 +1,35 @@
 package com.company.intecap.apibooks.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
+@Entity(name = "categoria")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
+public class Categoria implements Serializable{
 
-@Entity  // indica que es una entidad
-@Table(name = "categoria") // nombre de la tabla en la base de datos de JPA
-public class Categoria implements Serializable { // Serializable: sera una clase bean, para que pueda ser convertida a JSON
-    private static final long serialVersionUID = 1L; // identificador unico de la clase autogenerado
-
-    @Id // jakarta.persistence java persistence api (JPA) primera opcion
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // // GeneratedValue: indica que el id es autoincrementable
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String descripcion;
 
-
-    // Getters y Setters excepto el Serializable, ya que es autogenerado
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @OneToMany(
+                cascade = CascadeType.ALL,
+                fetch = FetchType.LAZY,
+                orphanRemoval = true,
+                mappedBy = "categoria"
+    )
+    private Set<Libro> libros;
 }

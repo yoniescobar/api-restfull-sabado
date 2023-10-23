@@ -12,7 +12,7 @@ public interface ICategoriaService {
 
     public ResponseEntity<CategoriaResponseRest> crear(Categoria categoria);
 
-    public ResponseEntity<CategoriaResponseRest> actualizar(Long id, Categoria categoria);
+    public ResponseEntity<CategoriaResponseRest> actualizar(Categoria categoria,Long id);
 
     public ResponseEntity<CategoriaResponseRest> eliminar(Long id);
 }
