@@ -24,7 +24,6 @@ public class Categoria implements Serializable{
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JsonIgnore
     @OneToMany(
                 cascade = CascadeType.ALL,
                 fetch = FetchType.EAGER,
