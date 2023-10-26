@@ -23,8 +23,9 @@ public class Libro implements Serializable {
     private String nombre;
     private String descripcion;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id", nullable = true)
+    @JsonBackReference
     private Categoria categoria;
 
 }
