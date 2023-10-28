@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 @Builder
 public class Libro implements Serializable {
-
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +25,7 @@ public class Libro implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id", nullable = true)
-    @JsonBackReference
+
     private Categoria categoria;
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/v1") // prefijo de la ruta  http://localhost:8080/api/v1
 public class CategoriaRestController {
@@ -33,6 +34,10 @@ public class CategoriaRestController {
     public ResponseEntity<CategoriaResponseRest> actualizarCategoria(@RequestBody Categoria request, @PathVariable Long id) {
         return categoriaService.actualizar(request, id);
 
+    }
+    @DeleteMapping("/categorias/{id}")
+    public ResponseEntity<CategoriaResponseRest> eliminarCategoria(@PathVariable Long id) {
+        return categoriaService.eliminar(id);
     }
 
 }

@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @Builder
 public class Categoria implements Serializable{
-
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,5 +30,6 @@ public class Categoria implements Serializable{
                 orphanRemoval = true,
                 mappedBy = "categoria"
     )
+    @JsonIgnore
     private Set<Libro> libros;
 }
