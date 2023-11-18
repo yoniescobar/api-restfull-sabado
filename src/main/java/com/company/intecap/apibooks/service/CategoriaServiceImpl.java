@@ -171,4 +171,11 @@ public class CategoriaServiceImpl implements ICategoriaService {
         }
         return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK); //Retorna un error 200
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existeCategoriaConNombre(String nombre) {
+        Optional<Categoria> categoria = categoriaDao.findByNombre(nombre);
+        return categoria.isPresent();
+    }
 }

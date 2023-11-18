@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -19,7 +21,14 @@ public class Categoria implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    //@NotBlank(message = "El nombre es requerido")
+    //@Column(unique = true, length = 200) //Validaciones
+    @NotNull(message = "El nombre null no es valido")
+    @NotBlank(message = "El nombre es requerido y no puede estar vacio")
+    @Column(unique = true, length = 200) // valores unicos
     private String nombre;
+    @NotNull(message = "La descripcion es requerida")
+    @NotBlank(message = "La descripcion es requerida")
     private String descripcion;
 
     @ToString.Exclude

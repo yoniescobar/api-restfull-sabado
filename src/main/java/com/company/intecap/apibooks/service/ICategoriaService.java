@@ -15,4 +15,8 @@ public interface ICategoriaService {
     public ResponseEntity<CategoriaResponseRest> actualizar(Categoria categoria,Long id);
 
     public ResponseEntity<CategoriaResponseRest> eliminar(Long id);
+
+    // Nuevo método para verificar si existe una categoría con el mismo nombre
+    boolean existeCategoriaConNombre(String nombre);
+
 }
